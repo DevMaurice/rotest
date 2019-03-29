@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Leave;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use App\Events\NewLeaveCreated;
 
 class LeaveController extends Controller
 {
@@ -24,7 +26,7 @@ class LeaveController extends Controller
      */
     public function create()
     {
-        //
+        return view('leave.create');
     }
 
     /**
@@ -35,7 +37,29 @@ class LeaveController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $attributes = request()->validate([
+            'date_from' =>'required|date',
+            'date_to' =>'required|date',
+            'reason' =>'required|string:max:255',
+
+        ]);
+
+        $date_from = Carbon::parse(request('date_from'));
+        $date_to = Carbon::parse(request('date_to'));
+
+        $days = $date_to->diffInDays($date_from);
+
+        $attributes['status'] = 'WAITING';
+
+        $attributes['days'] = $days;
+
+        $laeave = auth()->user()->leaves()->create($attributes);
+        
+
+        event(new NewLeaveCreated($leave));
+
+
+        return redirect()->back();
     }
 
     /**
