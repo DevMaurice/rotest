@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Leave;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -16,7 +17,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 'email', 'password','manager_id','kra_pin','dob','file_number','days_remaining'
     ];
 
     /**
@@ -36,4 +37,36 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    /**
+     * Relationship to users Leaves
+     */
+    public function leaves()
+    {
+        return $this->hasMany(Leave::class, 'user_id');
+    }
+
+    /**
+     * Get user's manager.
+     */
+    public function manager()
+    {
+        return $this->belongsTo(User::class, 'manager_id');
+    }
+
+    /**
+     * Get all staff managed by this manager.
+     */
+    public function staff()
+    {
+        return $this->hasMany(User::class, 'manager_id');
+    }
+
+    /**
+     * Determine if a given user is a manager.
+     */
+    public function getIsManagerAttribute()
+    {
+        return $this->manager_id ? true :false;
+    }
 }

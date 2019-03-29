@@ -19,7 +19,7 @@ class CreateUsersTable extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->boolean('manager');
+            $table->bigInteger('manager_id');
             $table->string('kra_pin');
             $table->date('dob');
             $table->string('file_number');
