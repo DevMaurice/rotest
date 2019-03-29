@@ -23,6 +23,8 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+        $leaves = auth()->user()->leaves;
+
+        return view('home', \compact('leaves'));
     }
 }
