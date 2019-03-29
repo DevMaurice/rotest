@@ -56,7 +56,7 @@ class LeaveController extends Controller
         $laeave = auth()->user()->leaves()->create($attributes);
         
 
-        event(new NewLeaveCreated($leave));
+        event(new NewLeaveCreated($laeave));
 
 
         return redirect()->back();

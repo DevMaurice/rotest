@@ -20,4 +20,15 @@ class Leave extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function getStateAttribute()
+    {
+        if ($this->status == 'WAITING') {
+            return 'indigo';
+        } elseif ($this->status == 'APPROVED') {
+            return 'green';
+        } else {
+            return 'red';
+        }
+    }
 }
