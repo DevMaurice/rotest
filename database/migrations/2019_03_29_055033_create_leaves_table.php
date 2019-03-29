@@ -19,7 +19,7 @@ class CreateLeavesTable extends Migration
             $table->date('date_from');
             $table->date('date_to');
             $table->string('reason');
-            $table->integer('days');
+            $table->integer('days')->nullable();
             $table->enum('status', ['WAITING','APPROVED','REJECTED']);
             $table->timestamps();
         });
