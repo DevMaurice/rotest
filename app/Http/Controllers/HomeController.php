@@ -25,6 +25,9 @@ class HomeController extends Controller
     {
         $leaves = auth()->user()->leaves;
 
-        return view('home', \compact('leaves'));
+        $managebleusers = auth()->user()->staff;
+
+
+        return view('home', \compact('leaves', 'managebleusers'));
     }
 }
